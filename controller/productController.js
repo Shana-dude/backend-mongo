@@ -43,3 +43,22 @@ exports.deleteProduct=async(req,res)=>{
     }
     res.status(200).json({message:"Product deleted successfully"});
 }
+
+exports.updateProduct=async(req,res)=>{
+  try{
+    const id = req.params.id;
+    const {name,price,description,category}=req.body;
+    const updated=await productModel.findByIdAndUpdate
+    (id,
+        {name,price,description,category},
+        {new:true}
+    );      
+    if(!updated){
+        return res.status(404).json({message:"Product not found"});
+    }
+    res.status(200).json(updated);
+  }catch(error){
+    console.error(error);
+    res.status(500).json({message:"Server error"});
+  }
+}
